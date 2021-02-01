@@ -49,6 +49,25 @@ exports.updateVemAttendance = functions.runWith({memory: '128MB'}).firestore
     //   });
   });
 
+exports.onUpdateUser = functions
+  .runWith({memory: '128MB'}).firestore
+  .document('users/{userId}')
+  .onUpdate(async (snap) => {
+    const user = snap.after.data();
+    switch (user.accountType) {
+      case 'normal':
+        return;
+      case 'detCommand': 
+        // TODO Update detachment as well
+      break;
+      case 'command':
+        // TODO update something??
+      break;
+      default: 
+        return;
+    }
+  });
+
 exports.onUpdateResponse = functions
   .runWith({memory: '128MB'}).firestore
   .document('responses/{responseId}')
